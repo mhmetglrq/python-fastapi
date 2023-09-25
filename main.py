@@ -59,18 +59,22 @@ async def delete_user(user_id: UUID):
     )
 
 
-@app.put("api/v1/users/{user_id}")
+@app.put("/api/v1/users/{user_id}")
 async def update_user(update_user: UpdateUser, user_id: UUID):
-    user = next((user for user in db if user.id == user_id), None)
-    if user:
-        if update_user.first_name is not None:
-            user.first_name = update_user.first_name
-        if update_user.last_name is not None:
-            user.last_name = update_user.last_name
-        if update_user.middle_name is not None:
-            user.middle_name = update_user.middle_name
+    for user in db:
+        if user.id == user_id:
+            if update_user.first_name is not None:
+                user.first_name = update_user.first_name
+            if update_user.last_name is not None:
+                user.last_name = update_user.last_name
+            if update_user.middle_name is not None:
+                user.middle_name = update_user.middle_name
+            if update_user.roles is not None:
+                user.roles = update_user.roles
+            if update_user.gender is not None:
+                user.gender = update_user.gender
 
-        return {"message": " User updated successfully"}
+            return {"message": f"{user.id} User updated successfully"}
     raise HTTPException(
         status_code=404, detail=f"User with id:{user_id} does not exist"
     )

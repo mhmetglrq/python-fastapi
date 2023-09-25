@@ -21,14 +21,13 @@ class User(BaseModel):
     first_name: str
     last_name: str
     middle_name: Optional[str]
-    gender: Gender
-    roles: List[Role]
+    gender: Optional[Gender] = Gender.default
+    roles: Optional[List[Role]] = [Role.user]
 
 
 class UpdateUser(BaseModel):
-    id: Optional[UUID] = uuid4()
-    first_name: str
-    last_name: str
+    first_name: Optional[str]
+    last_name: Optional[str]
     middle_name: Optional[str]
     gender: Optional[Gender] = Gender.default
     roles: Optional[List[Role]] = [Role.user]
